@@ -13,7 +13,7 @@ class Markdown2Ameblo(object):
         html = markdown.convert(markdown_text)
         html_parser = AmebloHTMLParser(self._log, **options)
         html_parser.feed(html)
-        print html_parser.converted_html()
+        #print html_parser.converted_html()
         #raise Exception("stop")
         return html_parser.converted_html()
 
