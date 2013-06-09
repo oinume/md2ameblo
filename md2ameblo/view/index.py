@@ -13,10 +13,11 @@ def index():
 def process():
     source = request.params.source
     #app.log.debug("parser = %s, converter = %s, prefer_h1 = %s" % (sparser, sconverter, prefer_h1))
-    app.log.debug("===== source =====\n" + source)
     if not source:
         return redirect('/')
 
+    #s = source.decode('utf-8')
+    app.log.debug("===== source =====\n" + source)
     md2ameblo = Markdown2Ameblo(app.log)
     converted_value = md2ameblo.convert(source)
     return template(
