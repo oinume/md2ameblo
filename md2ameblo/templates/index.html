@@ -1,0 +1,17 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+<div class="container">
+<h1>MarkdownをアメブロのHTMLに変換するよ</h1>
+<form action="/process" method="post">
+<div class="clearfix">
+<div class="input">
+<textarea name="source" class="span8" rows="20"></textarea>
+</div>
+</div>
+<div class="actions">
+<input class="btn btn-primary" type="submit" value="変換する">
+</div>
+</form>
+</div><!-- /div.container -->
+{% endblock %}

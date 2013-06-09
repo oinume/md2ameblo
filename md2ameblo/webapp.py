@@ -6,7 +6,7 @@ from md2ameblo.core.log import create_logger
 
 app = Bottle()
 app.log = create_logger(config['debug'])
-app_root = os.path.dirname(__file__)
+app_root = os.path.dirname(os.path.abspath(__file__))
 app.config['app_root'] = app_root
 app.config.update(config)
 TEMPLATE_PATH.append(os.path.join(app_root, 'templates'))
