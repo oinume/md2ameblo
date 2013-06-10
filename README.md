@@ -1,6 +1,9 @@
 # md2ameblo
 Markdownのテキストをアメブロでちゃんと表示できるようにするヤツ
 
+# サンプル
+http://md2ameblo.herokuapp.com/
+
 # 仕様
 * #, ##はは全て h3 タグに変換される(アメブロが h2 まで使ってるので)
 * \`\`\`code\`\`\` は pre タグになる
