@@ -1,19 +1,36 @@
 # -*- coding: utf-8 -*-
 
 import re
-from markdown2 import Markdown
 from HTMLParser import HTMLParser
+import misaka
+
+class AmebloHtmlRenderer(misaka.HtmlRenderer, misaka.SmartyPants):
+    def block_code(self, text, lang):
+        s = ''
+        if not lang:
+            lang = 'text'
+        s = '<pre style="border:solid #666 1px;background-color:#fff;white-space:pre-wrap;word-wrap:break-word;padding:4px;">%s</pre>' % (text)
+        return s
 
 class Markdown2Ameblo(object):
     def __init__(self, log):
         self._log = log
 
     def convert(self, markdown_text, **options):
-        markdown = Markdown()
-        html = markdown.convert(markdown_text)
+        markdown = misaka.Markdown(
+            AmebloHtmlRenderer(flags = misaka.HTML_HARD_WRAP | misaka.HTML_SAFELINK),
+            extensions = misaka.EXT_FENCED_CODE
+            | misaka.EXT_NO_INTRA_EMPHASIS
+            | misaka.EXT_TABLES
+            | misaka.EXT_AUTOLINK
+            | misaka.EXT_SPACE_HEADERS
+            | misaka.EXT_STRIKETHROUGH
+            | misaka.EXT_SUPERSCRIPT)
+        html = markdown.render(markdown_text)
+        self._log.debug("--- html ---\n" + html)
         html_parser = AmebloHTMLParser(self._log, **options)
         html_parser.feed(html)
-        #print html_parser.converted_html()
+        print html_parser.converted_html()
         #raise Exception("stop")
         return html_parser.converted_html()
 
@@ -27,30 +44,49 @@ class AmebloHTMLParser(HTMLParser):
         self._in_pre = False
 
     def handle_starttag(self, tag, attrs):
-        if tag in [ "pre", "code" ]:
-            self._in_pre = True
         self._log.debug("start tag: '%s'" % (tag))
-        self._converted_html += "<%s>" % (self.convert_tag(tag))
+        if self._in_pre:
+            self._converted_html += self.escape_html(self.convert_tag(tag, True, attrs))
+        else:
+            self._converted_html += self.convert_tag(tag, True, attrs)
+        if tag in [ "pre" ]:
+            self._in_pre = True
 
     def handle_endtag(self, tag):
-        if tag == "pre":
+        if tag in [ "pre" ]:
             self._in_pre = False
         self._log.debug("end tag: '%s'" % (tag))
-        self._converted_html += "</%s>" % (self.convert_tag(tag))
+        if self._in_pre:
+            self._converted_html += self.escape_html(self.convert_tag(tag, False))
+        else:
+            self._converted_html += self.convert_tag(tag, False)
 
     def handle_data(self, data):
         self._log.debug("data: '%s'" % (self.escape(data)))
         if self._in_pre:
-            self._converted_html += data
+            self._converted_html += self.escape_html(data)
         else:
             if re.match(r"^\s*$", data):
                 self._log.debug("Ignored.")
                 return
             self._converted_html += data.strip()
 
-    def convert_tag(self, tag):
-        map = { "code": "pre", "h1": "h3", "h2": "h3" }
-        return map.get(tag, tag)
+    def convert_tag(self, tag, start, attrs = {}):
+        #map = { "code": "pre", "h1": "h3", "h2": "h3" }
+        mappings = { "h1": "h3", "h2": "h3" }
+        element = mappings.get(tag, tag)
+        self._log.debug("attrs:" + str(attrs))
+        if start:
+            if len(attrs) == 0:
+                return "<%s>" % (element)
+            else:
+                tag = "<%s" % (element)
+                for attr in attrs:
+                    tag += ' %s="%s"' % (attr[0], attr[1])
+                tag += ">"
+                return tag
+        else:
+            return "</%s>" % (element)
 
     def converted_html(self):
         html = self._converted_html
@@ -59,15 +95,29 @@ class AmebloHTMLParser(HTMLParser):
         return html
 
     def escape(self, text):
-        map = { "\r": "\\r", "\n" : "\\n", "\t": "\\t" }
+        mappings = { "\r": "\\r", "\n" : "\\n", "\t": "\\t" }
         ret = ''
         for char in text:
-            if map.get(char):
-                ret += map[char]
+            if mappings.get(char):
+                ret += mappings[char]
             else:
                 ret += char
         return ret
 
+    def escape_html(self, text):
+        escaped = ''
+        for char in text:
+            if char == '<':
+                escaped += '&amp;lt;'
+            elif char == '>':
+                escaped += '&amp;gt;'
+            elif char == '&':
+                escaped += '&amp;'
+            elif char == '"':
+                escaped += '&amp;quot;'
+            else:
+                escaped += char
+        return escaped
 
 #print markdown.convert("""
 ## h1
