@@ -15,6 +15,8 @@ $ pip install -r requirements.txt
 $ ./run.sh
 ```
 
+ブラウザから http://localhost:5000/ にアクセスする
+
 # 仕様
 * #, ##はは全て h3 タグに変換される(アメブロが h2 まで使ってるので)
 * \`\`\`code\`\`\` は pre タグになる
