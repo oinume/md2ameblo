@@ -9,7 +9,11 @@ class AmebloHtmlRenderer(misaka.HtmlRenderer, misaka.SmartyPants):
         s = ''
         if not lang:
             lang = 'text'
-        s = '<pre style="border:solid #666 1px;background-color:#fff;white-space:pre-wrap;word-wrap:break-word;padding:4px;">%s</pre>' % (text)
+        # コンソール系とソースコードで色付けを変える
+        if lang in [ 'sh', 'bash', 'zsh' ]:
+            s = '<pre style="background-color:#444;color:#0f0;white-space:pre-wrap;word-wrap:break-word;padding:4px;">%s</pre>' % (text)
+        else:
+            s = '<pre style="border:solid #666 1px;background-color:#fff;white-space:pre-wrap;word-wrap:break-word;padding:4px;">%s</pre>' % (text)
         return s
 
 class Markdown2Ameblo(object):
