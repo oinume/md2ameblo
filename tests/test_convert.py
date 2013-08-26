@@ -32,6 +32,6 @@ import markdown2
 """.strip()
 )
         assert output.strip() == """
-<h3>code</h3><pre>#!/usr/bin/env python
+<h3>code</h3><pre style="border:solid #666 1px;background-color:#fff;white-space:pre-wrap;word-wrap:break-word;padding:4px;">#!/usr/bin/env python
 import markdown2</pre>
 """.strip()
