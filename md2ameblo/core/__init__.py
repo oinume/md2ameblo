@@ -213,7 +213,7 @@ class BloggerHtmlParser(HTMLParser):
             self._converted_html += data.strip()
 
     def convert_tag(self, tag, start, attrs = {}):
-        mappings = { "h1": "h4", "h2": "h4" }
+        mappings = { "h1": "h4", "h2": "h5", "h3": "h6" }
         element = mappings.get(tag, tag)
         self._log.debug("attrs:" + str(attrs))
         if start:
