@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-<h1>MarkdownをアメブロのHTMLに変換するよ</h1>
+<h1>Markdownを{{ blog_kind_text }}のHTMLに変換するよ</h1>
 <form action="/process" method="post">
 <div class="clearfix">
 <div class="input">
@@ -11,6 +11,7 @@
 </div>
 <div class="actions">
 <input class="btn btn-primary" type="submit" value="変換する">
+<input type="hidden" name="blog_kind" value="{{ blog_kind }}">
 </div>
 </form>
 </div><!-- /div.container -->

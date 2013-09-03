@@ -4,6 +4,23 @@ import re
 from HTMLParser import HTMLParser
 import misaka
 
+class BlogKind(object):
+    _values = {
+        'ameblo': u'アメブロ',
+        'blogger': 'Blogger',
+    }
+
+    def __init__(self):
+        pass
+
+    @classmethod
+    def text(cls, kind):
+        return cls._values[kind]
+
+    @classmethod
+    def values(cls):
+        return cls._values
+
 class Markdown2Html(object):
 
     def __init__(self, log):
@@ -35,16 +52,13 @@ class Markdown2Html(object):
 
 
 class Markdown2Ameblo(Markdown2Html):
-    # def __init__(self, log):
-    #     self._log = log
-
     def create_renderer(self):
         return AmebloHtmlRenderer(flags = misaka.HTML_HARD_WRAP | misaka.HTML_SAFELINK)
 
     def create_html_parser(self, **options):
         return AmebloHtmlParser(self._log, **options)
 
-class Markdown2Blogger(object):
+class Markdown2Blogger(Markdown2Html):
     def create_renderer(self):
         return BloggerHtmlRenderer(flags = misaka.HTML_HARD_WRAP | misaka.HTML_SAFELINK)
 
@@ -186,6 +200,7 @@ class BloggerHtmlParser(HTMLParser):
             self._converted_html += self.escape_html(self.convert_tag(tag, False))
         else:
             self._converted_html += self.convert_tag(tag, False)
+        self._converted_html += "\n"
 
     def handle_data(self, data):
         self._log.debug("data: '%s'" % (self.escape(data)))
@@ -215,8 +230,8 @@ class BloggerHtmlParser(HTMLParser):
 
     def converted_html(self):
         html = self._converted_html
-        html = re.sub(r"<pre>\s+", "<pre>", html)
-        html = re.sub(r"\s+</pre>", "</pre>", html)
+        #html = re.sub(r"<pre>\s+", "<pre>", html)
+        #html = re.sub(r"\s+</pre>", "</pre>", html)
         return html
 
     def escape(self, text):

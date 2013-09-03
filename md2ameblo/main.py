@@ -11,6 +11,7 @@ from bottle import run
 from md2ameblo.config import config
 from md2ameblo.webapp import app
 import md2ameblo.view.index
+import md2ameblo.view.blogger
 
 if __name__ == '__main__':
     app.log.debug("config = %s" % app.config)
