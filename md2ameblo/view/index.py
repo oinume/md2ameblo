@@ -19,7 +19,7 @@ def process():
         return redirect('/')
 
     #s = source.decode('utf-8')
-    app.log.debug("===== source =====\n" + source)
+    #app.log.debug("===== source =====\n" + source)
 
     blog_kind = request.params.blog_kind
     if blog_kind == 'ameblo':
