@@ -40,7 +40,7 @@ class Markdown2Html(object):
         self._log.debug("--- html ---\n" + html)
         html_parser = self.create_html_parser(**options)
         html_parser.feed(html)
-        print html_parser.converted_html()
+        #print html_parser.converted_html()
         #raise Exception("stop")
         return html_parser.converted_html()
 
