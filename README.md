@@ -1,5 +1,5 @@
 # md2ameblo
-Markdownのテキストをアメブロのエディタで貼り付け可能なHTMLに変換するヤツ
+Markdownのテキストをアメブロ or Bloggerのエディタで貼り付け可能なHTMLに変換するヤツ
 
 # サンプル
 http://md2ameblo.herokuapp.com/
