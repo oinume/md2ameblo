@@ -191,6 +191,7 @@ class BloggerHtmlParser(HTMLParser):
             self._converted_html += self.convert_tag(tag, True, attrs)
         if tag in [ "pre" ]:
             self._in_pre = True
+            self._converted_html += "\n"
 
     def handle_endtag(self, tag):
         if tag in [ "pre" ]:
@@ -200,7 +201,8 @@ class BloggerHtmlParser(HTMLParser):
             self._converted_html += self.escape_html(self.convert_tag(tag, False))
         else:
             self._converted_html += self.convert_tag(tag, False)
-        self._converted_html += "\n"
+        if not self._in_pre:
+            self._converted_html += "\n"
 
     def handle_data(self, data):
         self._log.debug("data: '%s'" % (self.escape(data)))
