@@ -1,0 +1,18 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+<div class="container">
+<h1>Markdownを{{ blog_kind_text }}のHTMLに変換するよ</h1>
+<form action="/process" method="post">
+<div class="clearfix">
+<div class="input">
+<textarea name="source" class="span8" rows="20"></textarea>
+</div>
+</div>
+<div class="actions">
+<input class="btn btn-primary" type="submit" value="変換する">
+<input type="hidden" name="blog_kind" value="{{ blog_kind }}">
+</div>
+</form>
+</div><!-- /div.container -->
+{% endblock %}

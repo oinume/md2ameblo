@@ -11,6 +11,22 @@ def index():
         blog_kind_text = BlogKind.text('ameblo')
     )
 
+@app.route('/ameblo')
+def index():
+    return template(
+        'form.html',
+        blog_kind = 'ameblo',
+        blog_kind_text = BlogKind.text('ameblo')
+    )
+
+@app.route('/blogger')
+def index():
+    return template(
+        'form.html',
+        blog_kind = 'blogger',
+        blog_kind_text = BlogKind.text('blogger')
+    )
+
 @app.route('/process', method='POST')
 def process():
     source = request.params.source
