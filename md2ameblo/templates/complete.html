@@ -3,14 +3,28 @@
 {% block content %}
 <div class="container">
 <h1>{{ blog_kind_text }}にコピペ</h1>
-<form>
+<form role="form">
 <div class="clearfix">
-<div class="input">
-<textarea class="span8" rows="20">
+<div class="form-group">
+<textarea id="converted_value" class="form-control" rows="20">
 {{ converted_value }}
 </textarea>
 </div>
+<!--
+<button id="copy" type="button" class="btn btn-primary btn-lg">
+<span class="glyphicon glyphicon-paperclip"></span> クリップボードにコピー
+</button>
+-->
 </div>
 </form>
 </div><!-- /div.container -->
+<!--
+<script>
+$(function () {
+  $("#converted_value").focus(function () {
+    $(this).select();
+  });
+});
+</script>
+-->
 {% endblock %}
