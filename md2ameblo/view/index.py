@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 import json
-from bottle import redirect, request, response
+from bottle import redirect, request, response, static_file
 from md2ameblo.webapp import app, template
 from md2ameblo.core import BlogKind, Markdown2Ameblo, Markdown2Blogger
 
 @app.route('/')
 def index():
-    return template(
-        'index.html',
-        blog_kind = 'ameblo',
-        blog_kind_text = BlogKind.text('ameblo')
-    )
+    return static_file('static/app/index.html', app.config['app_root'])
 
 @app.route('/ameblo')
 def index():
