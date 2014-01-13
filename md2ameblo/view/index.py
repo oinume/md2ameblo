@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from bottle import redirect, request
+import json
+from bottle import redirect, request, response
 from md2ameblo.webapp import app, template
 from md2ameblo.core import BlogKind, Markdown2Ameblo, Markdown2Blogger
 
@@ -54,3 +55,28 @@ def process():
 @app.route('/complete')
 def complete():
     pass
+# ↑Angular化に伴い使ってない
+
+@app.route('/<blog_kind>.json', method='POST')
+def convert(blog_kind):
+    markdown = request.json.get('markdown')
+    #app.log.debug("parser = %s, converter = %s, prefer_h1 = %s" % (sparser, sconverter, prefer_h1))
+    if not markdown:
+        import exceptions
+        raise exceptions.StandardError("No markdown")
+
+    #s = source.decode('utf-8')
+    app.log.debug("===== markdown =====\n" + markdown)
+
+    #blog_kind = request.json.blog_kind
+    if blog_kind == 'ameblo':
+        md2html = Markdown2Ameblo(app.log)
+    else:
+        md2html = Markdown2Blogger(app.log)
+
+    html = md2html.convert(markdown)
+    response.content_type = 'application/json'
+    return json.dumps({
+        'html': html.strip(),
+        'blog_kind': blog_kind,
+    })

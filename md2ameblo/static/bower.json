@@ -4,7 +4,8 @@
   "dependencies": {
     "jquery": "2.0.3",
     "underscore": "1.5.2",
-    "angular": "1.2.7",
+    "angular": "1.2.8",
+    "zeroclipboard": "1.2.3",
     "bootstrap": "3.0.3"
   }
 }
